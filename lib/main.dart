@@ -128,7 +128,7 @@ class _Home extends State<Home> {
                 ),
                 Container(
                   child: CustomPaint(
-                    size: Size(50, 50),
+                    size: Size(40, 40),
                     painter:DashGridPainter(text: ""),
                   ),
                 )
