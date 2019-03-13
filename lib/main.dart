@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'dart:ui';
 import 'CalenderView.dart';
 import 'WeekView.dart';
-import 'utils/dashGrid.dart';
-
+import 'dart:ui' as ui;
+import 'package:flutter/services.dart' show rootBundle;
 void main() => runApp(Navigatetor(window.defaultRouteName));
 
 Widget Navigatetor(String routeName) {
@@ -29,19 +29,30 @@ Widget Navigatetor(String routeName) {
 }
 
 class Home extends StatefulWidget {
+
   @override
-  State<StatefulWidget> createState() => _Home();
+  State<StatefulWidget> createState() {
+    return _Home();
+  }
 }
 
 class _Home extends State<Home> {
+  //全局key
   GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
+  //指示器当前月
   int nowMonth = 0;
+  //指示器当前年
   int nowYear = 0;
+  //指示器当前日期对象
+  DateTime dateTime;
 
   @override
   void initState() {
-    super.initState();
+    //初始化获取当前日期
     getCurrentTime();
+    //预加载签到图片
+    _loadImage();
+    super.initState();
   }
 
   @override
@@ -82,6 +93,7 @@ class _Home extends State<Home> {
                       ],
                     ),
                   ),
+                  //星期栏
                   child: Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -94,8 +106,7 @@ class _Home extends State<Home> {
                             ),
                             onPressed: () {
                               setState(() {
-                                nowMonth--;
-                                switchYear();
+                                switchYear(-1);
                               });
                             }),
                         Text(
@@ -110,8 +121,7 @@ class _Home extends State<Home> {
                           ),
                           onPressed: () {
                             setState(() {
-                              nowMonth++;
-                               switchYear();
+                               switchYear(1);
                             });
                           },
                         )
@@ -127,27 +137,48 @@ class _Home extends State<Home> {
                   decoration: BoxDecoration(color: Colors.white),
                 ),
                 Container(
-                  child: CustomPaint(
-                    size: Size(40, 40),
-                    painter:DashGridPainter(text: "",paintColor:Color.fromRGBO(255, 143, 68, 1.0)),
-                  ),
+                  width: 500,
+                  height: 400,
+                  child: MyCalenderView(nowDate: dateTime,image: this._image,),
                 )
+
               ],
             ),
           ),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              border: Border.all(color: Colors.blue))),
+              borderRadius: BorderRadius.all(Radius.circular(10)))),
     );
   }
 
+  //签到图片
+  ui.Image _image;
+
+  //加载返回assets文件夹里的图片
+  Future<ui.Image> loadImage(ByteData data) async {
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return fi.image;
+  }
+
+  //预加载图片若成功加载则刷新当前页
+  _loadImage() async{
+    final byteData =await rootBundle.load("assets/signed.png");
+    final _image = await loadImage(byteData);
+    setState(() {
+     this._image = _image;
+    });
+  }
+
+  //获取当前日期
   void getCurrentTime() {
     var date = DateTime.now();
     this.nowMonth = date.month;
     this.nowYear = date.year;
+    dateTime = date;
   }
-
-  void switchYear() {
+  //当操作指示器时切换对应的年月
+  void switchYear(int dx) {
+    nowMonth+=dx;
     if (nowMonth < 1) {
       nowYear--;
       nowMonth = 12;
@@ -155,5 +186,6 @@ class _Home extends State<Home> {
       nowYear++;
       nowMonth=1;
     }
+    dateTime = DateTime(nowYear,nowMonth);
   }
 }

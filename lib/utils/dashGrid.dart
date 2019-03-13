@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
-
+import 'dart:ui' as ui;
 class DashGridPainter extends CustomPainter {
+  //需要绘制的文本
   String text;
   Color paintColor;
   //绘制的数量
@@ -11,7 +12,12 @@ class DashGridPainter extends CustomPainter {
   double width;
   //dash的颜色
   final colorPainter = Paint();
-  DashGridPainter({this.text, this.paintColor});
+  //是否标记
+  bool isSign;
+  //预先加载图片
+  ui.Image image;
+
+  DashGridPainter({this.text, this.paintColor,this.isSign,this.image});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -20,12 +26,21 @@ class DashGridPainter extends CustomPainter {
     colorPainter.strokeWidth = 1.5;
     width = size.width; 
     dashWidth = 4;
-    dashCount = (width / (dashWidth));
-    print(" dashcount  = $dashCount");
-    drawLine(canvas, size);
+    dashCount = (width / (dashWidth)); 
+    drawDash(canvas, size);
+    final textPainter = TextPainter(text:TextSpan(text: this.text,style: TextStyle(color: paintColor,fontSize: 20)),textDirection: TextDirection.ltr);
+    textPainter.layout(minWidth: 30); 
+    final xCenterPoint = (width-10)/2;
+    final yCenterPoint = (width-20)/2;
+    textPainter.paint(canvas, Offset(xCenterPoint, yCenterPoint));
+    //绘制签到标记
+    if(isSign){
+       canvas.drawImage(this.image, Offset(0, 0), colorPainter);
+    }
+    
   }
 //画线部分
-  void drawLine(Canvas canvas, Size size) {
+  void drawDash(Canvas canvas, Size size) {
     //总计绘制四条上下左右
     for (int x = 0; x < 4; x++) {
       double tempPoint = 0;
@@ -33,14 +48,14 @@ class DashGridPainter extends CustomPainter {
       for (int i = 1; i <= dashCount; i++) {
         tempPoint += dashWidth;
         if (i % 2 == 1) {
-          drawlineDirection(canvas, lastPoint, tempPoint, colorPainter, x);
+          drawDashDirection(canvas, lastPoint, tempPoint, colorPainter, x);
         } 
         lastPoint = tempPoint;
       }
     }
   }
 //绘制各边的dash
-  void drawlineDirection(Canvas canvas, double lastPoint, double tempPoint,
+  void drawDashDirection(Canvas canvas, double lastPoint, double tempPoint,
       Paint paint, int direction) {
     if (direction == 0) {
       canvas.drawLine(Offset(lastPoint, 0), Offset(tempPoint, 0), paint);
@@ -59,4 +74,8 @@ class DashGridPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return oldDelegate != this;
   }
+
+
+
+
 }
