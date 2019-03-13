@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 class DashGridPainter extends CustomPainter {
   //需要绘制的文本
   String text;
+  //颜色笔
   Color paintColor;
   //绘制的数量
   double dashCount;
@@ -28,9 +29,10 @@ class DashGridPainter extends CustomPainter {
     dashWidth = 4;
     dashCount = (width / (dashWidth)); 
     drawDash(canvas, size);
-    final textPainter = TextPainter(text:TextSpan(text: this.text,style: TextStyle(color: paintColor,fontSize: 20)),textDirection: TextDirection.ltr);
-    textPainter.layout(minWidth: 30); 
-    final xCenterPoint = (width-10)/2;
+    final innerText =TextSpan(text: this.text,style: TextStyle(color: paintColor,fontSize: 20));
+    final textPainter = TextPainter(text:innerText,textDirection: TextDirection.ltr);
+    textPainter.layout(minWidth: 30);
+    final xCenterPoint = (width-(this.text.length*10))/2;
     final yCenterPoint = (width-20)/2;
     textPainter.paint(canvas, Offset(xCenterPoint, yCenterPoint));
     //绘制签到标记
