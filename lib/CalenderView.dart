@@ -41,13 +41,13 @@ class _MyCalenderView extends State<MyCalenderView> {
       for (; i < days[date.month - 1] + 1; i++) {
         final day = i + 1;
         items.add(
-            build_grid_item(day, getIsSignedDay(date.year, date.month, day)));
+            build_grid_item(day, getIsSignedDay(date, day)));
       }
     } else {
       for (; i < days[date.month - 1]; i++) {
         final day = i + 1;
         items.add(
-            build_grid_item(day, getIsSignedDay(date.year, date.month, day)));
+            build_grid_item(day, getIsSignedDay(date, day)));
       }
     }
     //绘制剩余的格子
@@ -75,10 +75,10 @@ class _MyCalenderView extends State<MyCalenderView> {
     );
   }
 
-  bool getIsSignedDay(int year, int month, int day) {
+  bool getIsSignedDay(DateTime date, int day) {
     bool flag = false;
     for (var i in widget.signedDays) {
-      if (year == i.year && month == i.month && day == i.day) {
+      if (date.year == i.year && date.month == i.month && day == i.day) {
         flag = true;
       }
     }

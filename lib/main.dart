@@ -10,7 +10,7 @@ import 'models/SignedDay.dart';
 void main() => runApp(navigator(window.defaultRouteName));
 
 Widget navigator(String stringData) {
-      stringData = "{\"data\":[{\"year\":2019,\"month\":3,\"day\":1}]}"; 
+    //  stringData = "{\"data\":[{\"year\":2019,\"month\":3,\"day\":1}]}"; 
      if(stringData=='/'){
        stringData = "{\"data\":[]}";
      }
