@@ -10,8 +10,11 @@ import 'models/SignedDay.dart';
 void main() => runApp(navigator(window.defaultRouteName));
 
 Widget navigator(String stringData) {
+   bool dataCheck(String data){ 
+      return RegExp("^\{\"data\":\[.*\]\}").hasMatch(data);  
+   }
     //  stringData = "{\"data\":[{\"year\":2019,\"month\":3,\"day\":1}]}"; 
-     if(stringData=='/'){
+     if(!dataCheck(stringData)){
        stringData = "{\"data\":[]}";
      }
       return MaterialApp(
@@ -20,6 +23,8 @@ Widget navigator(String stringData) {
         ),
         home: Home(signedDays:SignedDay.getList(json.decode(stringData))),
       );
+
+
 }
 
 class Home extends StatefulWidget {
@@ -186,4 +191,7 @@ class _Home extends State<Home> {
     }
     dateTime = DateTime(nowYear,nowMonth);
   }
+
+  
+
 }
