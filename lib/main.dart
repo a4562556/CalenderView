@@ -5,30 +5,24 @@ import 'CalenderView.dart';
 import 'WeekView.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart' show rootBundle;
-void main() => runApp(Navigatetor(window.defaultRouteName));
+import 'dart:convert';
+import 'models/SignedDay.dart';
+void main() => runApp(navigator(window.defaultRouteName));
 
-Widget Navigatetor(String routeName) {
-  switch (routeName) {
-    default:
+Widget navigator(String stringData) {
+      stringData = "{\"data\":[{\"year\":2019,\"month\":3,\"day\":1}]}"; 
       return MaterialApp(
         theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
           primarySwatch: Colors.blue,
         ),
-        home: Home(),
+        home: Home(signedDays: SignedDay.getList(json.decode(stringData))),
       );
-  }
 }
 
 class Home extends StatefulWidget {
+  final List<SignedDay> signedDays;
+
+  Home({this.signedDays});
 
   @override
   State<StatefulWidget> createState() {
@@ -57,6 +51,7 @@ class _Home extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    
     return new Scaffold(
       key: _key,
       appBar: new AppBar(
@@ -139,7 +134,7 @@ class _Home extends State<Home> {
                 Container(
                   width: 500,
                   height: 400,
-                  child: MyCalenderView(nowDate: dateTime,image: this._image,),
+                  child: MyCalenderView(nowDate: dateTime,image: this._image,signedDays: widget.signedDays),
                 )
 
               ],
