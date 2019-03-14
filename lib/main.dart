@@ -10,12 +10,15 @@ import 'models/SignedDay.dart';
 void main() => runApp(navigator(window.defaultRouteName));
 
 Widget navigator(String stringData) {
-      stringData = "{\"data\":[{\"year\":2019,\"month\":3,\"day\":1}]}"; 
+     // stringData = "{\"data\":[{\"year\":2019,\"month\":3,\"day\":1}]}"; 
+     if(stringData=='/'){
+       stringData = "{\"data\":[]}";
+     }
       return MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Home(signedDays: SignedDay.getList(json.decode(stringData))),
+        home: Home(signedDays:SignedDay.getList(json.decode(stringData))),
       );
 }
 
@@ -169,7 +172,7 @@ class _Home extends State<Home> {
     var date = DateTime.now();
     this.nowMonth = date.month;
     this.nowYear = date.year;
-    dateTime = date;
+    dateTime = DateTime(nowYear,nowMonth);
   }
   //当操作指示器时切换对应的年月
   void switchYear(int dx) {
