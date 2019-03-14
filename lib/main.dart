@@ -10,7 +10,7 @@ import 'models/SignedDay.dart';
 void main() => runApp(navigator(window.defaultRouteName));
 
 Widget navigator(String stringData) {
-     // stringData = "{\"data\":[{\"year\":2019,\"month\":3,\"day\":1}]}"; 
+      stringData = "{\"data\":[{\"year\":2019,\"month\":3,\"day\":1}]}"; 
      if(stringData=='/'){
        stringData = "{\"data\":[]}";
      }
@@ -104,7 +104,7 @@ class _Home extends State<Home> {
                             ),
                             onPressed: () {
                               setState(() {
-                                switchYear(-1);
+                                switchTime(-1);
                               });
                             }),
                         Text(
@@ -119,7 +119,7 @@ class _Home extends State<Home> {
                           ),
                           onPressed: () {
                             setState(() {
-                               switchYear(1);
+                               switchTime(1);
                             });
                           },
                         )
@@ -175,7 +175,7 @@ class _Home extends State<Home> {
     dateTime = DateTime(nowYear,nowMonth);
   }
   //当操作指示器时切换对应的年月
-  void switchYear(int dx) {
+  void switchTime(int dx) {
     nowMonth+=dx;
     if (nowMonth < 1) {
       nowYear--;
