@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
-import 'utils/DashGrid.dart';
-import 'models/SignedDay.dart';
+import 'DashGrid.dart';
+import '../models/SignedDay.dart';
 
 class MyCalenderView extends StatefulWidget {
   final DateTime nowDate;
@@ -37,19 +37,16 @@ class _MyCalenderView extends State<MyCalenderView> {
       }
     }
     //如果为闰年则二月有29天
+    int redundentDay=0;
     if (isLeapYear(date.year) && date.month == DateTime.february) {
-      for (; i < days[date.month - 1] + 1; i++) {
+      redundentDay=1;
+    }  
+    
+    for (; i < days[date.month - 1]+redundentDay; i++) {
         final day = i + 1;
         items.add(
             build_grid_item(day, getIsSignedDay(date, day)));
       }
-    } else {
-      for (; i < days[date.month - 1]; i++) {
-        final day = i + 1;
-        items.add(
-            build_grid_item(day, getIsSignedDay(date, day)));
-      }
-    }
     //绘制剩余的格子
     final remained = 7 - ((j + i) % 7);
     if (remained != 7) {

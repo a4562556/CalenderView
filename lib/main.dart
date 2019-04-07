@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:ui';
-import 'CalenderView.dart';
-import 'WeekView.dart';
+import 'core/CalenderView.dart';
+import 'core/WeekView.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
