@@ -21,6 +21,7 @@ class _MyCalenderView extends State<MyCalenderView> {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
+      padding: EdgeInsets.all(0),
       crossAxisCount: 7,
       children: _build(widget.nowDate),
     );
