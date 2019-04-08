@@ -10,13 +10,9 @@ import 'models/SignedDay.dart';
 void main() => runApp(navigator(window.defaultRouteName));
 
 Widget navigator(String stringData) {
-   bool dataCheck(String data){ 
-      return RegExp("^\{\"data\":\[.*\]\}").hasMatch(data);  
-   }
-    //  stringData = "{\"data\":[{\"year\":2019,\"month\":3,\"day\":1}]}"; 
-     if(!dataCheck(stringData)){
-       stringData = "{\"data\":[]}";
-     }
+    
+      stringData = "{\"data\":[{\"year\":2019,\"month\":4,\"day\":9}]}";
+     
       return MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.blue,
